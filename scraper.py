@@ -56,7 +56,7 @@ def scrape_product_hunt():
 
     # wait up to 10 seconds for the css of a DIV named datatast with a value of post item to become visible
             WebDriverWait(driver, 20).until(
-                EC.visibility_of_element_located((By.CSS_SELECTOR, "section[data-test^='post-item']"))
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "div[data-test^='homepage-section-today']"))
             )
             print("Page content loaded.")
 
@@ -68,7 +68,9 @@ def scrape_product_hunt():
             soup = BeautifulSoup(page_source, "html.parser")
 
     # search our soup item for all div items with the tag data test that both exist(x) and starts with the specified text
-            all_products = soup.find_all("section", attrs = {"data-test": lambda x: x and x.startswith('post-item')})
+            today_section_container = soup.find("div", attrs={"data-test": lambda x: x and x.startswith('homepage-section-today')})
+
+            all_products = today_section_container.find_all("section", attrs={"data-test": lambda x: x and x.startswith('post-item')})
 
             if not all_products:
                 raise ValueError("Could not find any products. The website structure may have changed!")
@@ -83,10 +85,11 @@ def scrape_product_hunt():
             for product_html in all_products[:5]:
             
         #set our variable to the value located by our find(must have <a> tag and be labeled data-test, it must also exist(x) and start with 'post-name')   
-                name_element = product_html.find("a", attrs={"data-test": lambda x: x and x.startswith('post-name')})
+                name_element = product_html.find("a", attrs={"data-sentry-element": lambda x: x and x.startswith('NextLink')})
             
         #based on the sites structure we ask BS to find the next part with the <a> tag which in our case we know is the tagline    
-                tagline_element = name_element.find_next_sibling("a") if name_element else None
+                tag_container = product_html.find("div", attrs={"data-test": lambda x: x and x.startswith('post-name')})
+                tagline_element = tag_container.find_next_sibling("div") if tag_container else None if name_element else None
 
         #checks if name_element exist and set full name text to our raw data that we found under the above function    
 
