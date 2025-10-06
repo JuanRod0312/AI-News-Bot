@@ -22,9 +22,7 @@ def gen_post_content(products_data):
             prooduct_list_strings += f"{i+1}. {product['name']}: {product['tagline']} ({product['url']})\n"
 
         prompt = f"""
-        Act as a tech enthusiast and content creator for LinkedIn. Your tone should be excited, insightful, and professional.
-
-        Your task is to write a LinkedIn post that highlights the top products trending around world of AI today.
+        Act as a software developer...Your tone should be down-to-earth, conversational, and chill, like you're sharing something cool you found with a colleague. Avoid marketing hype, buzzwords, and overly excited language. Be genuine and curious.
 
         Here is the list of products:
         ---
@@ -34,9 +32,10 @@ def gen_post_content(products_data):
         Please structure your post according to these rules:
         1.  **Catchy Hook:** Start with a strong, engaging opening question or statement to grab attention.
         2.  **Introduction:** Briefly state that you're sharing the top trending products from the world of AI.
-        3.  **Product Highlights:** For each product, list its name in bold and briefly mention what makes it interesting based on its tagline.
+        **Product Highlights (Bulleted List):** You MUST use the blue diamond emoji (🔹) as the bullet point for each product. Start with the product's name in bold and then briefly explain its purpose in simple terms based on the tagline.
         4.  **Call to Action:** Encourage discussion by asking a question like "Which of these are you most excited to try?" or "What amazing projects have you seen lately?".
         5.  **Hashtags:** End with 5-7 relevant hashtags, including #Tech #ProductHunt #Innovation and others related to the products (e.g., #AI, #Productivity).
+        6.  **CRITICAL RULE:** Your final output must be ONLY the text for the LinkedIn post. Do not include any introductory phrases, explanations, or separators like "---". The very first character of your response must be the first letter of the catchy hook.
 
         Do not include the URLs in the main body of the post. The goal is to generate discussion.
         """
