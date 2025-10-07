@@ -56,7 +56,7 @@ def scrape_product_hunt():
 
     # wait up to 10 seconds for the css of a DIV named datatast with a value of post item to become visible
             WebDriverWait(driver, 20).until(
-                EC.visibility_of_element_located((By.CSS_SELECTOR, "div[data-test^='homepage-section-today']"))
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "div[data-test^='homepage-section-last-week']"))
             )
             print("Page content loaded.")
 
@@ -68,9 +68,9 @@ def scrape_product_hunt():
             soup = BeautifulSoup(page_source, "html.parser")
 
     # search our soup item for all div items with the tag data test that both exist(x) and starts with the specified text
-            today_section_container = soup.find("div", attrs={"data-test": lambda x: x and x.startswith('homepage-section-today')})
+            week_section_container = soup.find("div", attrs={"data-test": lambda x: x and x.startswith('homepage-section-last-week')})
 
-            all_products = today_section_container.find_all("section", attrs={"data-test": lambda x: x and x.startswith('post-item')})
+            all_products = week_section_container.find_all("section", attrs={"data-test": lambda x: x and x.startswith('post-item')})
 
             if not all_products:
                 raise ValueError("Could not find any products. The website structure may have changed!")

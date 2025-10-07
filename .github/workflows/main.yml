@@ -1,9 +1,10 @@
-name: Daily LinkedIn Draft Creator
+name: Weekly LinkedIn Draft Creator
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 16 * * *'
+    # This schedule is set for 17:00 UTC on Monday (12:00 PM Noon EST on Monday).
+    - cron: '0 17 * * 1'
 
 jobs:
   build:

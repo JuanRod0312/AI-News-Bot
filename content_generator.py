@@ -32,7 +32,7 @@ def gen_post_content(products_data):
         Please structure your post according to these rules:
         1.  **Catchy Hook:** Start with a strong, engaging opening question or statement to grab attention.
         2.  **Introduction:** Briefly state that you're sharing the top trending products from the world of AI.
-        **Product Highlights (Bulleted List):** You MUST use the blue diamond emoji (🔹) as the bullet point for each product. Start with the product's name in bold and then briefly explain its purpose in simple terms based on the tagline.
+        3.  **Product Highlights (Bulleted List):** You MUST use the blue diamond emoji (🔹) as the bullet point for each product. Start with the product's name, followed by its tagline. Do NOT use bold formatting for the name.
         4.  **Call to Action:** Encourage discussion by asking a question like "Which of these are you most excited to try?" or "What amazing projects have you seen lately?".
         5.  **Hashtags:** End with 5-7 relevant hashtags, including #Tech #ProductHunt #Innovation and others related to the products (e.g., #AI, #Productivity).
         6.  **CRITICAL RULE:** Your final output must be ONLY the text for the LinkedIn post. Do not include any introductory phrases, explanations, or separators like "---". The very first character of your response must be the first letter of the catchy hook.
