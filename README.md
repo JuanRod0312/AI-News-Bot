@@ -1,70 +1,62 @@
-🤖 AI-Powered Weekly LinkedIn Bot
-This repository contains a Python-based automation pipeline that scrapes Product Hunt for the top products of the week, uses the Google Gemini AI to generate an insightful LinkedIn post, and creates a draft on LinkedIn for final human review and publication.
+# 🤖 AI-Powered Weekly LinkedIn Bot
 
-The entire process is orchestrated to run automatically every Monday at noon EST using GitHub Actions.
+This repository contains a **Python-based automation pipeline** that scrapes Product Hunt for the top products of the week, uses **Google Gemini AI** to generate an insightful LinkedIn post, and creates a **draft post on LinkedIn** for final human review and publication.
 
-Project Workflow
-This project follows a simple, robust, and automated ETL (Extract, Transform, Load) process:
+The entire process runs automatically **every Monday at noon EST** using **GitHub Actions**.
 
-Step
+---
 
-Action
+## 🧩 Project Workflow
 
-Technology Used
+This project follows a simple, robust, and automated **ETL (Extract, Transform, Load)** process:
 
-1. Extract
+| Step | Action | Technology Used |
+|------|--------|-----------------|
+| **1. Extract** | Scrapes Product Hunt’s “Last Week’s Top Products” and extracts the top 5 product names and taglines. | Python, Selenium, BeautifulSoup |
+| **2. Transform** | Sends the scraped data to the **Google Gemini API** to generate a high-quality LinkedIn post. | Google Gemini API |
+| **3. Load** | Uses the **LinkedIn API** to create a new **draft post**, ready for review and manual publishing. | LinkedIn API, OAuth 2.0 |
+| **4. Automate** | A **GitHub Actions workflow** runs the entire pipeline weekly for consistent, hands-off operation. | GitHub Actions |
 
-Scrapes the Product Hunt homepage to find the "Last Week's Top Products" section and extracts the top 5 product names and taglines.
+---
 
-Python, Selenium, BeautifulSoup
+## 🛠️ Tech Stack
 
-2. Transform
+- **Python 3.9+**
+- **Selenium** & **BeautifulSoup** for web scraping  
+- **Google Gemini API** for content generation  
+- **LinkedIn API** with OAuth 2.0 for post creation  
+- **GitHub Actions** for automation
 
-Sends the scraped data to the Google Gemini API with a carefully engineered prompt to generate a well-written, down-to-earth LinkedIn post.
+---
 
-Google Gemini API
+## 🚀 Getting Started
 
-3. Load
-
-Uses the LinkedIn API to create a new draft post containing the AI-generated content, ready for final review and manual publishing.
-
-LinkedIn API, OAuth 2.0
-
-4. Automate
-
-A GitHub Actions workflow runs the entire pipeline on a weekly schedule, ensuring consistent, hands-off operation.
-
-GitHub Actions
-
-🛠️ Tech Stack
-🚀 Getting Started
-To run this project locally, you will need Python 3.9+ and the Firefox browser installed.
-
-1. Clone the Repository
-
-git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
+```
 
-2. Set Up the Environment
+### 2. Set Up the Environment
+Create and activate a Python virtual environment.
 
-Create and activate a Python virtual environment:
-
-# For macOS/Linux
+### macOS/Linux:
+```bash
 python3 -m venv venv
 source venv/bin/activate
-
-# For Windows
+```
+### Windows:
+```bash
 python -m venv venv
 venv\Scripts\activate
-
-3. Install Dependencies
-
+```
+### 3. Install Dependencies
+``` bash
 pip install -r requirements.txt
-
-4. Configure Your Credentials
-
-Create a .env file in the root of the project folder. This file will hold your secret API keys and is ignored by Git. Add the following lines, replacing the placeholder values with your actual credentials:
-
+```
+### 4. Configure Your Credentials
+Create a .env file in the root directory and add the following (replace placeholders with your real credentials):
+```bash
 # Google Gemini API Key
 GEMINI_API_KEY="AIzaSy..."
 
@@ -72,34 +64,63 @@ GEMINI_API_KEY="AIzaSy..."
 LINKEDIN_CLIENT_ID="your_client_id"
 LINKEDIN_CLIENT_SECRET="your_client_secret"
 
-# This will be populated after the first manual run
-LINKEDIN_ACCESS_TOKEN=""
+# Must be generated manually from the LinkedIn Developer Portal’s "Tools" tab
+LINKEDIN_ACCESS_TOKEN="AQA..."
+```
+## ⚠️ Important:
+You must generate your LINKEDIN_ACCESS_TOKEN manually using the LinkedIn Developer App “Tools” tab with the following scopes:
+* openid
+* profile
+* w_member_social
 
-You will need to manually generate your LINKEDIN_ACCESS_TOKEN using the Tools tab in your LinkedIn Developer App and paste it here.
+## ⚙️ Usage
+You can test each component independently or run the entire pipeline.
 
-⚙️ Usage
-The project is modular, allowing you to test each component independently.
-
-Test the Scraper:
-
+### Test the Scraper:
+```bash
 python scraper.py
-
-Test the Content Generator:
-
+```
+### Test the Content Generator:
+```bash
 python content_generator.py
-
-Test the Full Pipeline Locally:
-
+```
+### Run the Full Pipeline:
+```bash
 python main.py
+```
 
-📂 Project Structure
+## 📂 Project Structure
+```bash
 .
 ├── .github/workflows/main.yml  # GitHub Actions workflow for automation
 ├── .env                        # Stores secret API keys (not committed)
 ├── .gitignore                  # Specifies files for Git to ignore
 ├── README.md                   # This file
-├── requirements.txt            # List of Python dependencies
-├── scraper.py                  # Module for scraping Product Hunt
-├── content_generator.py        # Module for generating post content with Gemini AI
-├── linkedin_poster.py          # Module for creating drafts on LinkedIn
-└── main.py                     # Main script to orchestrate the entire pipeline
+├── requirements.txt            # Python dependencies
+├── scraper.py                  # Scrapes Product Hunt
+├── content_generator.py        # Generates post content with Gemini AI
+├── linkedin_poster.py          # Creates drafts on LinkedIn
+└── main.py                     # Orchestrates the entire pipeline
+```
+
+## 🧠 Future Improvements
+* Add automatic hashtag and emoji optimization
+* Include OpenAI or Claude integration as fallback models
+* Auto-publish approved posts after review
+* Support for Twitter and Mastodon cross-posting
+
+## 📅 Automation Schedule
+This workflow runs automatically via GitHub Actions:
+* Frequency: Every Monday at 12:00 PM EST
+* Trigger: .github/workflows/main.yml
+
+## 💡 Inspiration 
+The idea came from wanting to combine AI creativity with automation reliability — letting AI handle the heavy lifting of content generation while keeping human review in the loop for authenticity.
+
+## 🧑‍💻 Author
+Juan Rodriguez
+📍 USA, FL
+[💼 LinkedIn ](https://www.linkedin.com/in/juan-sebastian-rodriguez-hernandez/)
+
+## ⭐ If you found this project useful, please consider giving it a star!
+
