@@ -3,19 +3,38 @@ name: Weekly LinkedIn Draft Creator
 on:
   workflow_dispatch:
   schedule:
-    # This schedule is set for 17:00 UTC on Monday (12:00 PM Noon EST on Monday).
-    - cron: '0 17 * * 1'
+    # Noon in New York year-round (handles DST by scheduling both UTC times)
+    - cron: '0 16 * * 1'  # 12:00 PM when NY is on EDT (UTC-4)
+    - cron: '0 17 * * 1'  # 12:00 PM when NY is on EST (UTC-5)
+
+concurrency:
+  group: weekly-linkedin
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # Guard early so we don't waste time if it's not exactly noon in New York.
+      - name: Exit unless it's exactly 12:00 in New York (Mon)
+        run: |
+          # Check hour in America/New_York
+          if [ "$(TZ=America/New_York date +%H)" != "12" ]; then
+            echo "Not noon in New York—exiting."
+            exit 0
+          fi
+          # Extra sanity check for weekday (1 = Monday)
+          if [ "$(TZ=America/New_York date +%u)" != "1" ]; then
+            echo "Not Monday in New York—exiting."
+            exit 0
+          fi
+
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
