@@ -16,34 +16,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Guard early so we don't waste time if it's not exactly noon in New York.
-      - name: Exit unless it's exactly 12:00 in New York (Mon)
+      # Decide whether to run now (noon Monday in America/New_York)
+      - name: Gate — compute should_run
+        id: gate
         run: |
-          # Check hour in America/New_York
-          if [ "$(TZ=America/New_York date +%H)" != "12" ]; then
-            echo "Not noon in New York—exiting."
-            exit 0
-          fi
-          # Extra sanity check for weekday (1 = Monday)
-          if [ "$(TZ=America/New_York date +%u)" != "1" ]; then
-            echo "Not Monday in New York—exiting."
-            exit 0
+          HOUR_NY=$(TZ=America/New_York date +%H)
+          DOW_NY=$(TZ=America/New_York date +%u) # 1 = Monday
+          if [ "$HOUR_NY" = "12" ] && [ "$DOW_NY" = "1" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "It is noon Monday in New York — proceeding."
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Not noon Monday in New York (hour=$HOUR_NY, dow=$DOW_NY) — skipping."
           fi
 
+      # Optional: show a clear notice when skipped
+      - name: Skipped notice
+        if: steps.gate.outputs.run != 'true'
+        run: echo "Workflow skipped: not noon Monday in New York."
+
       - name: Checkout repository
+        if: steps.gate.outputs.run == 'true'
         uses: actions/checkout@v4
 
       - name: Set up Python
+        if: steps.gate.outputs.run == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
+        if: steps.gate.outputs.run == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
       - name: Run the main automation script
+        if: steps.gate.outputs.run == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           LINKEDIN_CLIENT_ID: ${{ secrets.LINKEDIN_CLIENT_ID }}
